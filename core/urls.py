@@ -23,6 +23,7 @@ from . import settings
 
 urlpatterns = [
     path('articleCreation/',article_views.articleCreation, name='articlecreation'),
+    path('articleUpdate/<int:pk>',article_views.UpdateArticle.as_view(), name='articleupdation'),
     path('articleView/',article_views.articleView, name='articleview'),
     path('dashboard/',article_views.dashboard, name='dashboard'),
     path('profile/',user_views.profile, name='profile'),

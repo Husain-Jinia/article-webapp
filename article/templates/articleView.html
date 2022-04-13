@@ -11,6 +11,7 @@
         <li>
         {{post.title}}
         {{post.author}}
+        <a href="{%url 'articleupdation' post.pk %}">edit</a>
         </li>
     {% endfor %}
 </body>

@@ -3,7 +3,7 @@ from .models import *
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .forms import *
-from django.views.generic import ListView, DeleteView
+from django.views.generic import  DeleteView, UpdateView
 
 # Create your views here.
 @login_required 
@@ -30,3 +30,9 @@ def dashboard(request):
 def articleView(request):
     user_post = Articles.objects.filter(author = request.user)
     return render(request, 'articleView.html',{'user_post':user_post})
+
+class UpdateArticle(UpdateView):
+    model = Articles
+    template_name = 'updateArticle.html'
+    fields = ['title','description','image','category']
+    
