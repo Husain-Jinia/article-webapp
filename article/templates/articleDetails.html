@@ -6,9 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <h1>{{post.title}}</h1>
-    <h3>{{post.author}}</h3>
-    <p>{{post.description}}</p>
+<body style="color: #000;">
+    <h1>{{articles.title}}</h1>
+    <h3>{{articles.author.first_name}}</h3>
+    <p>{{articles.description}}</p>
+    <br>
+    <hr>
+    <br>
+    <form action="{% url 'like-article' articles.pk %}" ,method = "POST">
+        {%csrf_token%}
+        {%if liked%}
+        <button type = "submit", name="article_id", value ="{{articles.pk}}">unlike</button> 
+        {% else %}
+        <button type = "submit", name="article_id", value ="{{articles.pk}}">like</button> 
+        
+        {% endif %}
+        - {{total_likes}} likes
+    </form>
+
+
 </body>
 </html>

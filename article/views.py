@@ -27,11 +27,7 @@ def articleCreation(request):
     return render(request, 'articleCreationpage.html', {'form':form})
 
 
-
-
 def dashboard(request):
-    
-    
     print(request.user)
     profile= Profile.objects.filter(user=request.user).first()
     categories = profile.category.all()
@@ -50,6 +46,18 @@ class ArticleDetailView(DetailView):
     model= Articles
     template_name = 'articleDetails.html'
 
+    def get_context_data(self,*args, **kwargs):
+        context = super(ArticleDetailView,self).get_context_data(*args, **kwargs)
+        stuff = get_object_or_404(Articles, id = self.kwargs['pk'])
+        total_likes = stuff.total_likes()
+        liked=False
+        if stuff.likes.filter(pk = self.request.user.pk).exists():
+            liked = True
+        context["total_likes"] = total_likes 
+        context["liked"] = liked
+        return context
+    
+
 @login_required
 def viewArticle(request):
     user_post = Articles.objects.filter(author = request.user)
@@ -66,14 +74,15 @@ class UpdateArticle(UpdateView):
     fields = ['title','description','image','category']
     success_url = reverse_lazy(viewArticle)
     
-# def likeView(request, pk):
-#     article = get_object_or_404(Articles,id=request.POST.get('article_id'))
-#     liked = False
-#     if article.likes.filter(id=request.user.id).exists():
-#         article.likes.remove(request.user)
-#         liked=False
-#     else:
-#         article.likes.add(request.user)
-#         liked=True
+def likeView(request, pk):
+    article = get_object_or_404(Articles,pk=request.POST.get('article_id'))
+    print("ssssssssssssssssssssssssssssssssssss",article)
+    liked = False
+    if article.likes.filter(pk=request.user.pk).exists():
+        article.likes.remove(request.user)
+        liked=False
+    else:
+        article.likes.add(request.user)
+        liked=True
     
-#     return HttpResponseRedirect(reverse('dashboard', args=[str(pk)]))
+    return HttpResponseRedirect(reverse('article-detail', args=[str(pk)]))
