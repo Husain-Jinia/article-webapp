@@ -4,6 +4,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.views.generic import  DeleteView, UpdateView
+from django.urls import reverse_lazy
 
 # Create your views here.
 @login_required 
@@ -27,12 +28,18 @@ def dashboard(request):
     return render(request,'dashboard.html',{"articles":articles})
 
 @login_required
-def articleView(request):
+def viewArticle(request):
     user_post = Articles.objects.filter(author = request.user)
     return render(request, 'articleView.html',{'user_post':user_post})
+
+class DeleteArticle(DeleteView):
+    model = Articles
+    template_name = 'deleteArticle.html'
+    success_url = reverse_lazy(viewArticle)
 
 class UpdateArticle(UpdateView):
     model = Articles
     template_name = 'updateArticle.html'
     fields = ['title','description','image','category']
+    success_url = reverse_lazy(viewArticle)
     

@@ -1,4 +1,4 @@
-{% load crispy_forms_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,14 +10,12 @@
 <body>
     <div class="container">
         <div class="content-section">
+            <h1>Delete: {{post.title}}</h1>
             <form method="POST">
                 {% csrf_token %}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">edit article</legend>
-                    {{ form.as_p }}
-                </fieldset>
+                <h1>u wanna??</h1>
                 <div class="form-group">
-                    <button class="btn btn-outline-info" type="submit">edit</button>
+                    <button class="btn btn-outline-info" type="submit">DO IT!!!!</button>
                 </div>
             </form>
         </div>

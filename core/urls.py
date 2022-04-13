@@ -24,7 +24,8 @@ from . import settings
 urlpatterns = [
     path('articleCreation/',article_views.articleCreation, name='articlecreation'),
     path('articleUpdate/<int:pk>',article_views.UpdateArticle.as_view(), name='articleupdation'),
-    path('articleView/',article_views.articleView, name='articleview'),
+    path('articleDelete/<int:pk>',article_views.DeleteArticle.as_view(), name='articledeletion'),
+    path('articleView/',article_views.viewArticle, name='articleview'),
     path('dashboard/',article_views.dashboard, name='dashboard'),
     path('profile/',user_views.profile, name='profile'),
     path('register/',user_views.register, name='register'),
