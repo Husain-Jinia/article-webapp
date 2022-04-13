@@ -7,10 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    {% for article in articles  %}
+    {% for article in articles %}
     <li>
-        {{article.title}}
+        <a href="{%url 'articleDetail' article.pk%}">{{article.title}}</a>
     </li>
+    <br>
+    {% comment %} <form action="{% url 'like_articles' article.id %}" method = "POST"></form>
+    {%csrf_token%}
+    <button type = "submit", name="article_id", value ="{{article.id}}">like</button> - {{total_likes}} likes {% endcomment %}
     {% endfor %}
 </body>
 </html>

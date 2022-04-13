@@ -1,10 +1,14 @@
+from pdb import post_mortem
 from re import template
+from users.models import *
+import article
 from .models import *
-from django.shortcuts import render,redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import *
-from django.views.generic import  DeleteView, UpdateView
-from django.urls import reverse_lazy
+from django.views.generic import  DeleteView, UpdateView, ListView, DetailView
+from django.urls import reverse_lazy, reverse
 
 # Create your views here.
 @login_required 
@@ -23,9 +27,28 @@ def articleCreation(request):
     return render(request, 'articleCreationpage.html', {'form':form})
 
 
+
+
 def dashboard(request):
-    articles = Articles.objects.all()
-    return render(request,'dashboard.html',{"articles":articles})
+    
+    
+    print(request.user)
+    profile= Profile.objects.filter(user=request.user).first()
+    categories = profile.category.all()
+    articles=[]
+    for category in categories:
+        articles+= Articles.objects.filter(category=category)
+
+    print(articles)
+
+    # liked = False
+    # if articles.likes.filter(id = request.user.id).exists():
+    #     liked =True
+    return render(request,'dashboard.html',{'articles':articles})
+
+class ArticleDetailView(DetailView):
+    model= Articles
+    template_name = 'articleDetails.html'
 
 @login_required
 def viewArticle(request):
@@ -43,3 +66,14 @@ class UpdateArticle(UpdateView):
     fields = ['title','description','image','category']
     success_url = reverse_lazy(viewArticle)
     
+# def likeView(request, pk):
+#     article = get_object_or_404(Articles,id=request.POST.get('article_id'))
+#     liked = False
+#     if article.likes.filter(id=request.user.id).exists():
+#         article.likes.remove(request.user)
+#         liked=False
+#     else:
+#         article.likes.add(request.user)
+#         liked=True
+    
+#     return HttpResponseRedirect(reverse('dashboard', args=[str(pk)]))
