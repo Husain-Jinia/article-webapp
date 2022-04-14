@@ -7,24 +7,14 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import *
-from django.views.generic import  DeleteView, UpdateView, ListView, DetailView
+from django.views.generic import  CreateView,DeleteView, UpdateView, ListView, DetailView
 from django.urls import reverse_lazy, reverse
 
 # Create your views here.
-@login_required 
-def articleCreation(request):
-    form = ArticleCreationForms(request.POST or None)
-    if request.method == 'POST':
-        
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
-        else:
-            print(form.cleaned_data)
-            print(str(form.cleaned_data))
-            print("here")
-    
-    return render(request, 'articleCreationpage.html', {'form':form})
+class ArticleCreation(CreateView):   
+    model=Articles
+    form_class = ArticleCreationForms
+    template_name='articleCreationpage.html'
 
 
 def dashboard(request):
@@ -44,6 +34,7 @@ def dashboard(request):
 
 class ArticleDetailView(DetailView):
     model= Articles
+
     template_name = 'articleDetails.html'
 
     def get_context_data(self,*args, **kwargs):
@@ -70,8 +61,8 @@ class DeleteArticle(DeleteView):
 
 class UpdateArticle(UpdateView):
     model = Articles
+    form_class = ArticleUpdateForm
     template_name = 'updateArticle.html'
-    fields = ['title','description','image','category']
     success_url = reverse_lazy(viewArticle)
     
 def likeView(request, pk):

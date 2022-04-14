@@ -1,10 +1,11 @@
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
 <div class="facts-container-1">
     <div class="facts-container-2">
         <div class="facts-container-image-1">
             <div class="image-1">
-                <img class="image1" src="{{user.profile.image.url}}" style="max-width: 150px; max-height: 150px;" alt="">
+                <img class="image1"  src="{{user.profile.image.url}}" style="max-width: 150px; max-height: 150px; border-radius:5px" alt="">
             </div>
             <div class="text-1">
                 <div class="fact-1-header">
@@ -36,6 +37,7 @@
 
 <style>
     img{
+       
         transition: box-shadow .3s;
     }
     img:hover{ 
@@ -64,6 +66,7 @@
         width: 100%;
     }
     .image-1{
+        
         position: relative;
         padding: 1.2%;
     }
