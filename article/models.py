@@ -14,7 +14,7 @@ class Category(models.Model):
 class Articles(models.Model):
     title = models.CharField(max_length=256, default="")
     description  = models.TextField(default="")
-    image = models.ImageField(default = 'default.jpeg', upload_to = 'profile_pics')
+    image = models.ImageField(default = 'default.jpeg', upload_to = 'article_pictures')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category,on_delete=models.CASCADE)
     posted_on = models.DateTimeField(default=datetime.now)
