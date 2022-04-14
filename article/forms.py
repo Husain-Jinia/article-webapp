@@ -1,3 +1,4 @@
+from logging import PlaceHolder
 from .models import *
 from django import forms
 
@@ -9,7 +10,7 @@ class ArticleCreationForms(forms.ModelForm):
         widgets={
             'title' : forms.TextInput(attrs={'class':'form-control py-2'}),
             'description': forms.Textarea(attrs={'class':'form-control py-2'}),
-            'author' : forms.Select(attrs={'class':'form-control py-2'}),
+            'author' : forms.TextInput(attrs={'class':'form-control py-2','value':'','id':'elder',"type":"hidden"}),
             'category' : forms.Select(attrs={'class':'form-control py-2'}),
         }
 

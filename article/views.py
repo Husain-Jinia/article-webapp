@@ -11,6 +11,7 @@ from django.views.generic import  CreateView,DeleteView, UpdateView, ListView, D
 from django.urls import reverse_lazy, reverse
 
 # Create your views here.
+
 class ArticleCreation(CreateView):   
     model=Articles
     form_class = ArticleCreationForms
@@ -19,18 +20,23 @@ class ArticleCreation(CreateView):
 
 def dashboard(request):
     print(request.user)
-    profile= Profile.objects.filter(user=request.user).first()
-    categories = profile.category.all()
-    articles=[]
-    for category in categories:
-        articles+= Articles.objects.filter(category=category)
+    if request.user.is_authenticated:
+        profile= Profile.objects.filter(user=request.user).first()
+        categories = profile.category.all()
+        articles=[]
+        for category in categories:
+            articles+= Articles.objects.filter(category=category)
 
-    print(articles)
+        print(articles)
+        return render(request,'dashboard.html',{'articles':articles})
+    else:
+        return render(request,'dashboard.html')
 
     # liked = False
     # if articles.likes.filter(id = request.user.id).exists():
     #     liked =True
-    return render(request,'dashboard.html',{'articles':articles})
+    
+
 
 class ArticleDetailView(DetailView):
     model= Articles
@@ -65,6 +71,7 @@ class UpdateArticle(UpdateView):
     template_name = 'updateArticle.html'
     success_url = reverse_lazy(viewArticle)
     
+
 def likeView(request, pk):
     article = get_object_or_404(Articles,pk=request.POST.get('article_id'))
     print("ssssssssssssssssssssssssssssssssssss",article)

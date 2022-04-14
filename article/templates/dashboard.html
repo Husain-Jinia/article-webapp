@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{%if user.is_authenticated %}
 <div class="conatiner-fluid mt-3" style="margin-left: 10px;">
     <div class="row mx-auto">
         <div class="col-lg-3 mx-auto">
@@ -172,4 +173,7 @@ a.icon-link:hover {
   width: 50px;
 }
 </style>
+{% else %}
+NO!!
+{% endif %}
 {% endblock content %}

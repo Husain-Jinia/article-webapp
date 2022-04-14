@@ -1,6 +1,3 @@
-from distutils.command.upload import upload
-from email.mime import image
-from unicodedata import category
 from django.db import models
 from datetime import datetime
 from users.models import *
