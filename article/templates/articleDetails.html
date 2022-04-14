@@ -11,7 +11,7 @@
     <div class="grid-x align-center article--container">
       <div class="cell large-9 article--body">
         <div style="margin-bottom: 70px;">
-          <h1 style="text-align: center; text-decoration: underline; text-underline-offset: 20px;">“{{articles.title}}”</h1>
+          <h1 style="text-align: center;">“{{articles.title}}”</h1>
         </div>
         <br>
     <hr>
@@ -28,9 +28,7 @@
     </form>
     <br>
     <hr>
-        <p>{{articles.description}}</p>
-  
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p style="align:left">{{articles.description|safe}}</p>
         <div style="display: flex;justify-content: space-between">
             <a>AUTHOR: {{articles.author.first_name}} {{articles.author.last_name}}</a>
             <div style="margin-left: 20px ;"><a href="{% url 'dashboard' %}" class="btn btn-outline-dark" style="font-size: 19px">&#x2190; Back to blog page</a></div>   

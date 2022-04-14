@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'users',
     'article',
     'crispy_forms',
+    'ckeditor',
+    'tinymce'
 ]
 
 MIDDLEWARE = [
@@ -120,8 +122,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = "/article/"
-MEDIA_ROOT = BASE_DIR
+MEDIA_URL = "/article_media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'article_media')
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static')
 ]

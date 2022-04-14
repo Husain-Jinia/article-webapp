@@ -1,21 +1,24 @@
 
-
 {% extends 'base.html' %}
 {% block content %}
 <div class="conatiner-fluid mt-3" style="margin-left: 10px;">
     <div class="row mx-auto">
-        {%for posts in user_posts%}
-        <div class="card mb-3">
-          <div class="inner-card">
+        {%for post in user_post%}
+        <div class="card mb-3 mx-2" style="max-width:37rem">
+          <div class="inner-card" >
             <div class="img-wrapper">
-              <img src="{{posts.image.url}}" alt="">
+              <img src="{{post.image.url}}" alt="">
             </div>
             <div class="content">
-              <h1>{{posts.title}}</h1>
+              <h1>{{post.title}}</h1>
             </div>
-            <div class="btn-wrapper">
-                <button class="view-btn" data-src="https://source.unsplash.com/collection/190727/900x600" ><a href="{%url 'articleupdation' posts.pk %}">edit</a></button>
-                <button class="view-btn" data-src="https://source.unsplash.com/collection/190727/900x600" > <a href="{%url 'articledeletion' posts.pk %}">Delete</a></button>
+            <div class="btn-wrapper d-flex justify-content-between">
+
+                    <button class="btn btn-outline-primary px-4" data-src="https://source.unsplash.com/collection/190727/900x600" ><a href="{%url 'articleupdation' post.pk %}" style="color:black;text-decoration:none">edit</a></button>
+
+                    <button class="btn btn-outline-danger px-4" data-src="https://source.unsplash.com/collection/190727/900x600" > <a href="{%url 'articledeletion' post.pk %}" style="color:black;text-decoration:none">Delete</a></button>
+
+                
             </div>
           </div>
         </div>
