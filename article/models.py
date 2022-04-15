@@ -18,7 +18,17 @@ class Articles(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category,on_delete=models.CASCADE)
     posted_on = models.DateTimeField(default=datetime.now)
-    likes = models.ManyToManyField(User, related_name='like_articles', blank=True, null=True)
+    likes = models.ManyToManyField(User, blank=True,related_name='like_articles')
+    dislikes = models.ManyToManyField(User, blank=True,related_name='dislike_articles')
+    block = models.ManyToManyField(User, blank=True, related_name = 'block_articles' )
 
+    def __str__(self):
+        return f'{self.title} - {self.author}'
     def total_likes(self):
         return self.likes.count()
+
+    def total_dislikes(self):
+        return self.dislikes.count()
+    
+    def total_blocks(self):
+        return self.dislikes.count()

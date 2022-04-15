@@ -29,6 +29,7 @@ urlpatterns = [
     path('articleDetail/<int:pk>',article_views.ArticleDetailView.as_view(), name='article-detail'),
     path('dashboard/',article_views.dashboard, name='dashboard'),
     path('like/<int:pk>',article_views.likeView,name='like-article'),
+    path('dislike/<int:pk>',article_views.dislikeView,name='dislike-article'),
     path('profile/',user_views.profile, name='profile'),
     path('register/',user_views.register, name='register'),
     path('login/',auth_views.LoginView.as_view(template_name = 'users/login.html'), name='login'),

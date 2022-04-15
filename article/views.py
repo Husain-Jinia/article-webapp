@@ -12,6 +12,58 @@ from django.urls import reverse_lazy, reverse
 
 # Create your views here.
 
+def likeView(request, pk,*args,**kwargs):
+    article = Articles.objects.get(pk=pk)
+    disliked = False
+    for dislike in article.dislikes.all():
+        if dislike == request.user:
+            disliked = True
+            break
+    if disliked:
+        article.dislikes.remove(request.user)
+
+    liked = False
+    
+    for like in article.likes.all():
+        if like == request.user:
+            liked == True
+            break
+    if not liked:
+        article.likes.add(request.user)
+    if liked:
+        article.likes.remove(request.user)
+
+    next  = request.POST.get('next','/dashboard')
+    return HttpResponseRedirect(next)
+
+def dislikeView(request,pk,*args,**kwargs):
+    article = Articles.objects.get(pk=pk)
+    liked = False
+    
+    for like in article.likes.all():
+        if like == request.user:
+            liked = True
+            break
+    
+    if liked:
+        article.likes.remove(request.user)
+
+    disliked = False
+    for dislike in article.dislikes.all():
+        if dislike == request.user:
+            disliked = True
+            break
+    if not disliked:
+        article.dislikes.add(request.user)
+    if disliked:
+        article.dislikes.remove(request.user)
+
+
+    next  = request.POST.get('next','/dashboard')
+    return HttpResponseRedirect(next)
+
+
+
 class ArticleCreation(CreateView):   
     model=Articles
     form_class = ArticleCreationForms
@@ -27,31 +79,17 @@ def dashboard(request):
         for category in categories:
             articles+= Articles.objects.filter(category=category)
 
-        print(articles)
-        return render(request,'dashboard.html',{'articles':articles})
+        
+        return render(request,'dashboard.html',{'articles':articles, 'categories':categories})
     else:
         return render(request,'dashboard.html')
-
-    # liked = False
-    # if articles.likes.filter(id = request.user.id).exists():
-    #     liked =True
     
-
-
 class ArticleDetailView(DetailView):
     model= Articles
-
     template_name = 'articleDetails.html'
 
     def get_context_data(self,*args, **kwargs):
         context = super(ArticleDetailView,self).get_context_data(*args, **kwargs)
-        stuff = get_object_or_404(Articles, id = self.kwargs['pk'])
-        total_likes = stuff.total_likes()
-        liked=False
-        if stuff.likes.filter(pk = self.request.user.pk).exists():
-            liked = True
-        context["total_likes"] = total_likes 
-        context["liked"] = liked
         return context
     
 
@@ -72,15 +110,3 @@ class UpdateArticle(UpdateView):
     success_url = reverse_lazy(viewArticle)
     
 
-def likeView(request, pk):
-    article = get_object_or_404(Articles,pk=request.POST.get('article_id'))
-    print("ssssssssssssssssssssssssssssssssssss",article)
-    liked = False
-    if article.likes.filter(pk=request.user.pk).exists():
-        article.likes.remove(request.user)
-        liked=False
-    else:
-        article.likes.add(request.user)
-        liked=True
-    
-    return HttpResponseRedirect(reverse('article-detail', args=[str(pk)]))
