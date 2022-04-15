@@ -36,4 +36,4 @@ class Articles(models.Model):
         return self.dislikes.count()
     
     def total_blocks(self):
-        return self.dislikes.count()
+        return self.block.count()
