@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 from article.models import *
+
+#Form for user registration
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
     phone_number = forms.CharField(max_length=256, required=False)
@@ -12,6 +14,7 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['first_name','last_name','username','phone_number','dob', 'email', 'password1', 'password2']
 
+#Proxy form for user registration
 class UserRegisterProxy(forms.Form):
     CHOICES = []
     all_cat = Category.objects.all()
@@ -27,6 +30,8 @@ class UserRegisterProxy(forms.Form):
     last_name = forms.CharField(max_length=256,required=True)
     username = forms.CharField(max_length=256,required=True)
     category = forms.MultipleChoiceField(choices=CHOICES)
+
+    #For saving & validating the form data into the database
 
     def save(self):
         all_cat = Category.objects.all()    
@@ -51,15 +56,24 @@ class UserRegisterProxy(forms.Form):
                 category.save()
         user.save()
         profile.save()
+
+#Form for updating user information
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
-    phone_number = forms.CharField(max_length=256, required=False)
-    dob = forms.DateField()
     class Meta:
         model = User
-        fields = ['first_name','phone_number','dob','last_name','username', 'email']
+        fields = ['first_name','last_name','username','email']
 
+#form for updating user profile information
 class ProfileUpdateForm(forms.ModelForm):
+    CHOICES = []
+    all_cat = Category.objects.all()
+    for i in all_cat:
+        CHOICES.append((i,i))
+    
+    phone_number = forms.CharField(max_length=256, required=False)
+    dob = forms.DateField()
+    category = forms.MultipleChoiceField(choices=CHOICES)
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['image','phone_number','dob', 'category']

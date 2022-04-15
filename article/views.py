@@ -1,19 +1,70 @@
-from pdb import post_mortem
-from re import template
 from users.models import *
-import article
 from .models import *
 from django.http import HttpResponseRedirect
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .forms import *
-from django.views.generic import  CreateView,DeleteView, UpdateView, ListView, DetailView
-from django.urls import reverse_lazy, reverse
+from django.views.generic import  CreateView,DeleteView, UpdateView, DetailView
+from django.urls import reverse_lazy
 
-# Create your views here.
 
+# Functional view created to display all the articles based on user preference
+def dashboard(request):
+    print(request.user)
+    if request.user.is_authenticated:
+        # fetching articles based on user prefered categories
+        profile= Profile.objects.filter(user=request.user).first()
+        categories = profile.category.all()
+        articles=[]
+        for category in categories:
+            articles+= Articles.objects.filter(category=category)
+
+        
+        return render(request,'dashboard.html',{'articles':articles, 'categories':categories})
+    else:
+        return render(request,'dashboard.html')
+
+# Class based view to display the detailed view for the article
+class ArticleDetailView(DetailView):
+    model= Articles
+    template_name = 'articleDetails.html'
+
+    def get_context_data(self,*args, **kwargs):
+        context = super(ArticleDetailView,self).get_context_data(*args, **kwargs)
+        return context
+
+# Class based view for users to write their own articles
+class ArticleCreation(CreateView):   
+    model=Articles
+    form_class = ArticleCreationForms
+    template_name='articleCreationpage.html'
+
+
+# Functional view for user to view their own articles
+@login_required
+def viewArticle(request):
+    user_post = Articles.objects.filter(author = request.user)
+    return render(request, 'articleView.html',{'user_post':user_post})
+
+# Class based view created for users to delete their own articles
+class DeleteArticle(DeleteView):
+    model = Articles
+    template_name = 'deleteArticle.html'
+    success_url = reverse_lazy(viewArticle)
+
+# Class based view created for users to update their own articles
+class UpdateArticle(UpdateView):
+    model = Articles
+    form_class = ArticleUpdateForm
+    template_name = 'updateArticle.html'
+    success_url = reverse_lazy(viewArticle)
+
+
+# Like functionality
 def likeView(request, pk,*args,**kwargs):
+    
     article = Articles.objects.get(pk=pk)
+    # To check if the article is disliked and if true then to remove the dislike
     disliked = False
     for dislike in article.dislikes.all():
         if dislike == request.user:
@@ -22,6 +73,7 @@ def likeView(request, pk,*args,**kwargs):
     if disliked:
         article.dislikes.remove(request.user)
 
+    # logic for like/unlike functionality
     liked = False
     
     for like in article.likes.all():
@@ -36,8 +88,10 @@ def likeView(request, pk,*args,**kwargs):
     next  = request.POST.get('next','/dashboard')
     return HttpResponseRedirect(next)
 
+# dislike functionality
 def dislikeView(request,pk,*args,**kwargs):
     article = Articles.objects.get(pk=pk)
+    # To check if the article is disliked and if true then to remove the dislike
     liked = False
     
     for like in article.likes.all():
@@ -48,6 +102,7 @@ def dislikeView(request,pk,*args,**kwargs):
     if liked:
         article.likes.remove(request.user)
 
+    # logic for dislike functionality
     disliked = False
     for dislike in article.dislikes.all():
         if dislike == request.user:
@@ -64,49 +119,14 @@ def dislikeView(request,pk,*args,**kwargs):
 
 
 
-class ArticleCreation(CreateView):   
-    model=Articles
-    form_class = ArticleCreationForms
-    template_name='articleCreationpage.html'
 
 
-def dashboard(request):
-    print(request.user)
-    if request.user.is_authenticated:
-        profile= Profile.objects.filter(user=request.user).first()
-        categories = profile.category.all()
-        articles=[]
-        for category in categories:
-            articles+= Articles.objects.filter(category=category)
 
-        
-        return render(request,'dashboard.html',{'articles':articles, 'categories':categories})
-    else:
-        return render(request,'dashboard.html')
-    
-class ArticleDetailView(DetailView):
-    model= Articles
-    template_name = 'articleDetails.html'
 
-    def get_context_data(self,*args, **kwargs):
-        context = super(ArticleDetailView,self).get_context_data(*args, **kwargs)
-        return context
     
 
-@login_required
-def viewArticle(request):
-    user_post = Articles.objects.filter(author = request.user)
-    return render(request, 'articleView.html',{'user_post':user_post})
+    
 
-class DeleteArticle(DeleteView):
-    model = Articles
-    template_name = 'deleteArticle.html'
-    success_url = reverse_lazy(viewArticle)
 
-class UpdateArticle(UpdateView):
-    model = Articles
-    form_class = ArticleUpdateForm
-    template_name = 'updateArticle.html'
-    success_url = reverse_lazy(viewArticle)
     
 

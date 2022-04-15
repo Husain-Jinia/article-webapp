@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 from users.models import *
 from ckeditor.fields import RichTextField
+from django.urls import reverse
 
 
 # Create your models here.
@@ -22,6 +23,10 @@ class Articles(models.Model):
     dislikes = models.ManyToManyField(User, blank=True,related_name='dislike_articles')
     block = models.ManyToManyField(User, blank=True, related_name = 'block_articles' )
 
+    def get_absolute_url(self):
+        return reverse("dashboard")
+    
+    
     def __str__(self):
         return f'{self.title} - {self.author}'
     def total_likes(self):
