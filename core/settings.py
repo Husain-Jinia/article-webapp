@@ -30,8 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users.app.UsersAppConfig',
-    'article.app.ArticleAppConfig',
+    'users',
+    'article',
     'crispy_forms',
     'ckeditor',
     'tinymce'

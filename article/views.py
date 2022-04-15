@@ -8,6 +8,11 @@ from django.views.generic import  CreateView,DeleteView, UpdateView, DetailView
 from django.urls import reverse_lazy
 
 
+class DashboardCategory(UpdateView):
+    models = Profile
+    template_name = 'dashboard.html'
+    fields = ['category']
+
 # Functional view created to display all the articles based on user preference
 def dashboard(request):
     print(request.user)

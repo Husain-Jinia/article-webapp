@@ -2,5 +2,5 @@ env/
 
 *.sqlite3
 *.log
-*.pyc
+
 __pycache__
