@@ -5,7 +5,7 @@ from datetime import date
 from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
-from article.models import *
+from article.models import Category
 # Create your models here.
 
 
