@@ -21,7 +21,7 @@ class Articles(models.Model):
     posted_on = models.DateTimeField(default=datetime.now)
     likes = models.ManyToManyField(User, blank=True,related_name='like_articles')
     dislikes = models.ManyToManyField(User, blank=True,related_name='dislike_articles')
-    block = models.ManyToManyField(User, blank=True, related_name = 'block_articles' )
+    block = models.ManyToManyField(User, blank=True, related_name = 'block_articles')
 
     def get_absolute_url(self):
         return reverse("dashboard")
