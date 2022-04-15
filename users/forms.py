@@ -24,8 +24,8 @@ class UserRegisterProxy(forms.Form):
     phone_number = forms.CharField(max_length=256, required=False)
     dob = forms.DateField()
     
-    password1 = forms.CharField(max_length=256,required=True)
-    password2 = forms.CharField(max_length=256,required=True)
+    password1 = forms.CharField(max_length=256,required=True, widget=forms.PasswordInput())
+    password2 = forms.CharField(max_length=256,required=True,widget=forms.PasswordInput())
     first_name = forms.CharField(max_length=256,required=True)
     last_name = forms.CharField(max_length=256,required=True)
     username = forms.CharField(max_length=256,required=True)
@@ -56,6 +56,8 @@ class UserRegisterProxy(forms.Form):
                 category.save()
         user.save()
         profile.save()
+    
+    
 
 #Form for updating user information
 class UserUpdateForm(forms.ModelForm):
