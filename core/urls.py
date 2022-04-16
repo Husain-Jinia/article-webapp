@@ -15,9 +15,12 @@ urlpatterns = [
     path('articleView/',article_views.viewArticle, name='article-view'),
     path('articleUpdate/<int:pk>',article_views.UpdateArticle.as_view(), name='article-updation'),
     path('articleDelete/<int:pk>',article_views.DeleteArticle.as_view(), name='article-deletion'),
-    # like/dislike urls
+    # like/dislike & block urls
     path('like/<int:pk>',article_views.likeView,name='like-article'),
     path('dislike/<int:pk>',article_views.dislikeView,name='dislike-article'),
+    path('block/<int:pk>',article_views.blockView,name='block-article'),
+
+    
     # user auth urls
     path('profile/',user_views.profile, name='profile'),
     path('register/',user_views.register, name='register'),

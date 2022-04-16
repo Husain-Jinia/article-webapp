@@ -27,6 +27,22 @@
                   </p>
                   <a href="{% url "article-detail" article.id %}" class="btn btn--with-icon"><i class="btn-icon fa fa-long-arrow-right"></i>READ MORE</a>
                 </div>
+                <div class="d-flex">
+                  <form class="mx-2" action="{% url 'like-article' article.pk %}" ,method = "POST">
+                    {%csrf_token%}
+                    <input type="hidden" name="next" value="{{request.path}}">
+                    <button style ="background-color:transparent; border:none;box-shadow:none" type = "submit"><i class="far fa-thumbs-up"></i></button> 
+                    
+                    - {{article.likes.all.count}} likes
+                  </form>
+                  <form class="mx-2" action="{% url 'dislike-article' article.pk %}" ,method = "POST">
+                    {%csrf_token%}
+                    <input type="hidden" name="next" value="{{request.path}}">
+                    <button style ="background-color:transparent; border:none;box-shadow:none" type = "submit"><i class="far fa-thumbs-down"></i></button> 
+                    
+                    - {{article.dislikes.all.count}} dislikes
+                  </form>
+                </div>
               </article>
             </div>
           </div>
@@ -175,20 +191,20 @@ a.icon-link:hover {
 </style>
 {% else %}
 <div class="container">
-  <div class="content-section">
-      <form method="POST">
-          {% csrf_token %}
-         <h3>Permission Denied !! register or Login first</h3>
-          <div class="form-group my-3">
-              <button  class="btn btn-outline-info" type="submit"><a class="ml-2"  href="{% url 'register' %}">Sign Up<a/></button>
-          </div>
-      </form>
-      <div class="border-top pt-3">
-          <small class="text-muted">
-              Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
-          </small>
-      </div>
-  </div>
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+           <h3>Permission Denied !! register or Login first</h3>
+            <div class="form-group my-3">
+                <button  class="btn btn-outline-info" type="submit"><a class="ml-2"  href="{% url 'register' %}">Sign Up<a/></button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
+            </small>
+        </div>
+    </div>
 </div>
 {% endif %}
 {% endblock content %}

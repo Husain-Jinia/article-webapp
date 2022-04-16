@@ -119,6 +119,20 @@ def dislikeView(request,pk,*args,**kwargs):
     next  = request.POST.get('next','/dashboard')
     return HttpResponseRedirect(next)
 
+def blockView(request,pk,*args,**kwargs):
+    article = Articles.objects.get(pk=pk)
+    blocked = False
+    for block in article.blocks.all():
+        if block == request.user:
+            blocked = True
+            break
+    if not blocked:
+        article.blocks.add(request.user)
+    if blocked:
+        article.blocks.remove(request.user)
+    next  = request.POST.get('next','/dashboard')
+    return HttpResponseRedirect(next)
+
 class UpdateCategoryPreference(UpdateView):
     model = Profile
     Form_class = UpdateCategoryPreferenceForm
