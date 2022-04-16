@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+           <h3>Landing page for article feed website</h3>
+            <div class="form-group my-3">
+                <button  class="btn btn-outline-info" type="submit"><a class="ml-2"  href="{% url 'register' %}">Sign Up<a/></button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
+            </small>
+        </div>
+    </div>
+</div>
+
+{%endblock content%}

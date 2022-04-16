@@ -1,6 +1,7 @@
 from logging import PlaceHolder
 from .models import *
 from django import forms
+from users.models import Profile
 
 class ArticleCreationForms(forms.ModelForm):
     
@@ -24,3 +25,7 @@ class ArticleUpdateForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class':'form-control py-2'}),
             'category' : forms.Select(attrs={'class':'form-control py-2'}),
         }
+
+class UpdateCategoryPreferenceForm(forms.ModelForm):
+    model = Profile
+    fields = ("category")

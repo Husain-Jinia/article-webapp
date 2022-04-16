@@ -1,3 +1,4 @@
+from re import template
 from users.models import *
 from .models import *
 from django.http import HttpResponseRedirect
@@ -8,10 +9,6 @@ from django.views.generic import  CreateView,DeleteView, UpdateView, DetailView
 from django.urls import reverse_lazy
 
 
-class DashboardCategory(UpdateView):
-    models = Profile
-    template_name = 'dashboard.html'
-    fields = ['category']
 
 # Functional view created to display all the articles based on user preference
 def dashboard(request):
@@ -121,6 +118,15 @@ def dislikeView(request,pk,*args,**kwargs):
 
     next  = request.POST.get('next','/dashboard')
     return HttpResponseRedirect(next)
+
+class UpdateCategoryPreference(UpdateView):
+    model = Profile
+    Form_class = UpdateCategoryPreferenceForm
+    template_name = 'dashboard.html'
+
+def landingpage(request):
+    return render(request,'landingPage.html')
+
 
 
 

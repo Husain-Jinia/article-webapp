@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 from . import settings
 
 urlpatterns = [
+    path('',article_views.landingpage, name='landing-page'),
     # Article urls
     path('dashboard/',article_views.dashboard, name='dashboard'),
     path('articleDetail/<int:pk>',article_views.ArticleDetailView.as_view(), name='article-detail'),
